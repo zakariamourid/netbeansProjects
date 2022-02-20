@@ -1,0 +1,94 @@
+Une société de location de matériel et outillage de travail de différentes catégories veut développer une application pour gérer son activité.
+Nous proposons la base de données suivante :
+
+  Categorie (idcat, libelle)
+  Matériel (idMat, libelle, prixEmprunte,idCat#)
+  Client (idClt, nomClient, prenomClient)
+  Emprunter (idEmp,  idMatr# , dateEmprunt, DateRetour, dureeEmprunt, montantTotal)
+  Degats (idD, idEmp#, description, coutEstime)
+
+N.B.  Les champs marqués en gras et soulignés représentent les clés primaires des tables,
+les champs marqués par # représentent les clés étrangères.
+
+
+   1)Créer les différentes tables et insérer un jeu d’essai.      (3 pts) 
+   2)Crée un menu qui facilite l’utilisation de l’application.   (2 pts)
+   3)Créer un formulaire pour ajouter un nouveau Materiel, La categorie est choisie à partir d’une liste déroulante. (3 pts) 
+   4)Créer un formulaire qui permet de rechercher un matériel par description ou par catégorie et par prix de location. (4 pts)
+   5)Créer un formulaire permettant de consulter un emprunt. 
+      1.On choisit le client dans une liste déroulante. Au choix du client on affiche dans une grille la liste des emprunts.
+      (4pts)
+  
+      2.Lors de la sélection d’un emprunt dans cette grille, on affiche dans une deuxième grille le détail de l’emprunt 
+      (les informations du matériel emprunte ainsi que les dégâts s’il y en a. 
+      (4pts)
+
+
+
+create table categorie(
+    idcat number(4) primary key,
+    libelle varchar2(25));
+
+   create table materiel(
+     idmat number(4) primary key,
+     libelle varchar2(25),
+     prixemprunt number(4),
+     idcat number(4),
+     constraint materiel_cat_id_fk foreign key(idcat) references categorie(idcat));
+
+
+
+   create table client(
+    idclt number(4) primary key,
+    nomclt varchar2(25),
+    prenomclt varchar2(25));
+
+
+
+  create table emprunter(
+    idemp number(4) primary key,
+    idmat number(4),
+    dateemprunt date,
+    dateretour date,
+    dureeemprunt number(4),
+    montanttotal number(4),
+    idclt number(4) ,
+    constraint materiel_emp_id_fk foreign key(idmat) references materiel(idmat),
+    constraint client_emp_id_fk foreign key(idclt) references client(idclt));
+
+      
+
+
+
+create table degats(
+   idd number(4) primary key,
+   idemp number(4),
+   description varchar2(50),
+   coutestim varchar2(30),
+   constraint degats_emp_id_fk foreign key(idemp) references emprunter(idemp));
+
+insert into categorie values(1,'xxxx');
+
+insert into categorie values(2,'yyyyy');
+
+insert into materiel values(1,'voiture',20,1);
+
+insert into materiel values(2,'voiture',40,1);
+
+insert into materiel values(3,'zzzzzz',30,2);
+
+insert into client values(1,'wahbi','fatima');
+
+insert into client values(2,'ennaki','rania');
+
+insert into emprunter values(1,1,'02/09/03','09/09/030',20,500,1);
+
+insert into emprunter values(2,2,'03/09/03','09/10/030',50,100,2);
+
+insert into emprunter values(3,3,'04/09/03','09/10/030',6,50,1);
+
+insert into degats values(1,1,'mammamamam','hhhhhhh');
+
+insert into degats values(2,2,'bbbbbbb','ccccccc');
+
+
